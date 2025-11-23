@@ -61,3 +61,5 @@ export default function Index() {
     </View>
   );
 }
+// Object ko string banane ke liye JSON.stringify() use karte hai
+// aur wapas String ko object me karne ke liye JSON.parse() use karte hai
