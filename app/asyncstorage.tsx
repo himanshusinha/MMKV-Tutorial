@@ -3,18 +3,15 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// save data as Object
-let names: { name: string; age: number } = {
-  name: "Himanshu Sinha",
-  age: 24,
-};
-
 const AsyncStorageScreen: React.FC = () => {
   const [data, setData] = useState("");
 
+  const name: [string, string] = ["name", "himanshu"];
+  const surname: [string, string] = ["surname", "sinha"];
+
   const saveData = async () => {
     try {
-      await AsyncStorage.setItem("data", JSON.stringify(names));
+      await AsyncStorage.multiSet([name, surname]);
       console.log("Saved");
     } catch (e) {
       console.log(e, "Error save data");
@@ -23,22 +20,21 @@ const AsyncStorageScreen: React.FC = () => {
 
   const getData = async () => {
     try {
-      const storedData = await AsyncStorage.getItem("data");
-
-      if (storedData) {
-        const obj = JSON.parse(storedData);
-
-        // Forced ordered logs
-        console.log("name:", obj.name);
-        console.log("age:", obj.age);
-      } else {
-        console.log("No data found");
-      }
+      const values = await AsyncStorage.multiGet(["name", "surname"]);
+      const obj = JSON.stringify(values);
+      console.log(obj);
+      /*
+      c
+        values output:
+        [
+          ["name", "himanshu"],
+          ["surname", "sinha"]
+        ]
+      */
     } catch (error) {
       console.log(error, "Error get data");
     }
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
