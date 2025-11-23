@@ -1,3 +1,4 @@
+import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, Button, StyleSheet, View } from "react-native";
 import { createMMKV, useMMKVNumber, useMMKVString } from "react-native-mmkv";
@@ -14,6 +15,7 @@ const storage = createMMKV({
 export default function Index() {
   const [name, setName] = useMMKVString("user.name");
   const [age, setAge] = useMMKVNumber("user.age");
+
   useEffect(() => {
     const user: User = { username: "Marc", age: 21 };
     storage.set("user", JSON.stringify(user));
@@ -64,6 +66,10 @@ export default function Index() {
     <View style={styles.container}>
       <Button title="Add Data" onPress={addData} />
       <Button title="Get Data" onPress={getData} />
+      <Button
+        title="Go to AsyncStorage"
+        onPress={() => router.push("/asyncstorage")}
+      />
     </View>
   );
 }
