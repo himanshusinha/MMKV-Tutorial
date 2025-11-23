@@ -3,15 +3,17 @@ import React, { useState } from "react";
 import { StyleSheet, Text, TextInput, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// save data as Array
-let names: string[] = [];
+// save data as Object
+let names: { name: string; age: number } = {
+  name: "Himanshu Sinha",
+  age: 24,
+};
 
 const AsyncStorageScreen: React.FC = () => {
-  const [data, setData] = useState<string>("");
+  const [data, setData] = useState("");
 
   const saveData = async () => {
     try {
-      names.push(data);
       await AsyncStorage.setItem("data", JSON.stringify(names));
       console.log("Saved");
     } catch (e) {
@@ -22,8 +24,13 @@ const AsyncStorageScreen: React.FC = () => {
   const getData = async () => {
     try {
       const storedData = await AsyncStorage.getItem("data");
+
       if (storedData) {
-        console.log("name:", JSON.parse(storedData));
+        const obj = JSON.parse(storedData);
+
+        // Forced ordered logs
+        console.log("name:", obj.name);
+        console.log("age:", obj.age);
       } else {
         console.log("No data found");
       }
