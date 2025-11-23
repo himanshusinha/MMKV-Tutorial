@@ -6,12 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 const AsyncStorageScreen: React.FC = () => {
   const [data, setData] = useState("");
 
-  const name: [string, string] = ["name", "himanshu"];
-  const surname: [string, string] = ["surname", "sinha"];
-
   const saveData = async () => {
     try {
-      await AsyncStorage.multiSet([name, surname]);
+      await AsyncStorage.setItem("name", "himanshu");
       console.log("Saved");
     } catch (e) {
       console.log(e, "Error save data");
@@ -20,20 +17,20 @@ const AsyncStorageScreen: React.FC = () => {
 
   const getData = async () => {
     try {
-      const values = await AsyncStorage.multiGet(["name", "surname"]);
+      const values = await AsyncStorage.getItem("name");
       const obj = JSON.stringify(values);
       console.log(obj);
-      /*
-      c
-        values output:
-        [
-          ["name", "himanshu"],
-          ["surname", "sinha"]
-        ]
-      */
     } catch (error) {
       console.log(error, "Error get data");
     }
+  };
+
+  const deleteData = async () => {
+    try {
+      await AsyncStorage.removeItem("name");
+      setData("");
+      console.log("remove data");
+    } catch (error) {}
   };
   return (
     <SafeAreaView style={styles.container}>
@@ -50,6 +47,9 @@ const AsyncStorageScreen: React.FC = () => {
 
       <TouchableOpacity style={styles.buttonStyle} onPress={getData}>
         <Text style={styles.buttonText}>Get Data</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.buttonStyle} onPress={deleteData}>
+        <Text style={styles.buttonText}>Delete Data</Text>
       </TouchableOpacity>
 
       <Text></Text>
